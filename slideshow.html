@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+    body{
+        background-color: #F5D08A;
+    }
+    .quiz-container{
+      position:relative;
+      background-color:#1E821E;
+      border : 8px solid #D27D32;
+      font-size:17px;
+      color:#333;
+      height: 300px;
+      width: 80%;
+      margin-top:40px;
+      text-align:center;
+      font-weight:300;
+      margin: auto;
+  }
+  
+  .slide{
+     position:absolute;
+     left:0px;
+     top:30%;
+     width:100%;
+     z-index:1;
+     opacity:0;
+     transition:opacity 0.5s;
+  }
+  
+  .active-slide{
+     opacity:1;
+     z-index:2;
+  }
+  h1{
+      text-align: center;
+  }
+  .buttons{
+      width: 100%;
+      text-align: center;
+      
+  }
+  .bt1{
+    display: inline-block;
+  }
+  .bt2{
+    display: inline-block;
+  }
+
+  .quiz-btnO{
+    
+    background: #00AE68;
+    box-shadow: 0px 7px 0px 0px #007144;
+    border:none;
+    width: 80px;
+    height: 70px;
+    border-radius: 100%;
+    margin: 10px 2% 10px 0;
+    font-weight:bold;
+
+    display: block;
+  }
+  .quiz-btnX{
+    display: inline-block;
+    display: block;
+    background: #e22121;
+    box-shadow: 0px 7px 0px 0px #8f0101;
+    border:none;
+    width: 80px;
+    height: 70px;
+    border-radius: 100%;
+    font-weight:bold;
+    
+  }
+  .quiz-btnO:hover{
+    box-shadow: 0px 0px 0px 0px #007144;
+    margin-top: 15px;
+    margin-bottom: 10px;
+  }
+  .quiz-btnX:hover{
+    box-shadow: 0px 0px 0px 0px #8f0101;
+    margin-top: 15px;
+    margin-bottom: 10px;
+  }
+  .question{
+    font-weight:bold;
+    color : white;
+    font-family: sans-serif;
+    font-size: larger;
+  }
+    </style>
+</head>
+<body>
+    
+<h1>국어 퀴즈</h1>
+
+<div class="quiz-container">
+    <div id="quiz"> </div> <br><br><br><br><br><br>
+    
+</div>
+
+<div class="buttons">
+    <div class="bt1"><button id="Obtn" value="O" class="quiz-btnO" onclick="btnFun(value)"> O </button></div>
+    <div class="bt2"><button id="Xbtn" value="X" class="quiz-btnX" onclick="btnFun(value)"> X </button></div>
+</div>
+
+<div class="quiz-ctrl">
+
+   <div id="result"> </div> 
+</div>
+
+    <script>
+        const quizData = [
+            {
+                question : "'곰살갑다'의 뜻은 '성질이 보기보다 상냥하고 부드럽다' 이다.",
+                correct : 'O'
+            },
+            {
+                question : "'몽치'의 뜻은 '얼마 되지 않는 짧은 동안' 이다",
+                correct : 'X'
+            },
+            {
+                question :  "'된바람'은 북쪽에서 부는 바람을 이르는 말이다.",
+                correct : 'O'
+            },
+            {
+                question :  "'슬겁다'의 뜻은 '마음에 거슬림이 없이 기쁘다' 이다.",
+                correct : 'X'
+            },
+            {
+                question :  "'궁글다'의 뜻은 '모서리가 둥그렇게 말리다' 이다.",
+                correct : 'X'
+            },
+            {
+                question :  "'언덕밥'의 뜻은 '끼니때가 지난 뒤에 차리는 밥' 이다",
+                correct : 'X'
+            },
+            {
+                question :  "'꾸미'의 뜻은 '국이나 찌개에 넣는 고기붙이' 이다",
+                correct : 'O'
+            },
+            {
+                question :  "'안다니'의 뜻은 '무엇이든지 잘 아는 체하는 사람' 이다.",
+                correct : 'O'
+            },
+            {
+                question :  "'되작이다'의 뜻은 '물건들을 요리조리 들추며 뒤지다' 이다.",
+                correct : 'O'
+            },
+            {
+                question :  "'사로잠'의 뜻은 '너무 피곤하여 아무 데서나 쓰러져 자는 잠' 이다.",
+                correct : 'X'
+            }
+        ]
+
+        const quizDisplay = document.getElementById('quiz');
+
+        const OBtn = document.getElementById('Obtn');
+        const XBtn = document.getElementById('Xbtn');
+
+        let currentSlide = 0;
+        const resultDisplay = document.getElementById('quiz');
+
+        function BuildQuiz(){
+            const output = [];
+            quizData.forEach(
+                (currentQuestion, questionNum)=> {
+                    const answers = [];
+                    
+                    output.push(`<div class="slide"><div class="question"> ${currentQuestion.question}</div>
+                                <div class="answer">${answers.join('&nbsp;&nbsp;&nbsp;&nbsp;')}</div></div>`);
+                }
+            );
+            quizDisplay.innerHTML = output.join('');
+        }
+        
+        var num = 0;
+        let numCorrect = 0;
+
+        function btnFun(value){
+            const currentQuestion = quizData[num];
+                if (value === currentQuestion.correct){
+                    numCorrect++;
+
+            }
+            if(currentSlide == slides.length-1){
+            resultDisplay.innerHTML=`<h3 style="color:white; font-size: larger; ">${quizData.length}개중에서 ${numCorrect}개 맞추셨습니다.</h3>`
+            }
+        num++;}
+
+        function showResult(){
+            const answerDisplays = quizDisplay.querySelectorAll('.answer');
+            let numCorrect = 0;
+            quizData.forEach((currentQuestion, questionNum)=>{
+                const answerDisplay = answerDisplays[questionNum];
+                const selector = `input[name=question${questionNum}]:checked`;
+                const userAnswer = (answerDisplay.querySelector(selector) || {}).value;
+                if (userAnswer === currentQuestion.correct){
+                    numCorrect++;
+                    answerDisplays[questionNum].style.color = 'lightgreen';
+                }else{
+                    answerDisplays[questionNum].style.color = 'red';
+                }
+            });
+            submitBtn.style.display='none';
+            resultDisplay.innerHTML=`<h3 style="color:#333;">${quizData.length}개중에서 ${numCorrect}개 맞추셨습니다.</h3>`
+        }
+        function showSlide(n){
+            currentSlide = n;
+
+            if(currentSlide == slides.length){
+                OBtn.style.display='none';
+                XBtn.style.display='none';
+            }
+            if(n != 0){
+                slides[n-1].classList.remove('active-slide');
+            }
+            if(n != slides.length){
+            slides[n].classList.add('active-slide');
+            }
+            }
+
+        BuildQuiz();
+        const slides = document.querySelectorAll('.slide');
+        showSlide(currentSlide);
+        function showNextSlide(){showSlide(currentSlide+1);}
+        XBtn.addEventListener('click',showNextSlide);
+        OBtn.addEventListener('click',showNextSlide);
+    </script>
+</body>
+
+</html>
