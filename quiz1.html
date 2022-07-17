@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>내일은 국어왕</title>
+    <style>
+    body{
+        background-color: #F5D08A;
+    }
+    .quiz-container{
+      position:relative;
+      background-color:#1E821E;
+      border : 8px solid #D27D32;
+      font-size:17px;
+      color:#333;
+      height: 300px;
+      width: 80%;
+      text-align:center;
+      font-weight:300;
+      margin: auto;
+      margin-top: 15px;
+      margin-bottom: 20px;
+  }
+  
+  .slide{
+     position:absolute;
+     left:0px;
+     top:30%;
+     width:100%;
+     z-index:1;
+     opacity:0;
+     transition:opacity 0.5s;
+  }
+  
+  .active-slide{
+     opacity:1;
+     z-index:2;
+  }
+  h1{
+    margin: auto;
+    display: inline-block;
+    text-align: center;
+    font-family: "Comic Sans", "Apple Chancery", cursive;
+    font-size: x-large;
+  }
+  .title{
+    width: 100px;
+    text-align: center;
+    border: 6px solid #af6524;  
+    margin: auto;
+    background-color: whitesmoke;
+  }
+
+  .buttons{
+      width: 100%;
+      text-align: center;
+      
+  }
+  .bt1{
+    display: inline-block;
+  }
+  .bt2{
+    display: inline-block;
+  }
+
+  .quiz-btnO{
+    
+    background: #00AE68;
+    box-shadow: 0px 7px 0px 0px #007144;
+    border:none;
+    width: 80px;
+    height: 70px;
+    border-radius: 100%;
+    margin: 10px 2% 10px 0;
+    font-weight:bold;
+
+    display: block;
+  }
+  .quiz-btnX{
+    display: inline-block;
+    display: block;
+    background: #e22121;
+    box-shadow: 0px 7px 0px 0px #8f0101;
+    border:none;
+    width: 80px;
+    height: 70px;
+    border-radius: 100%;
+    font-weight:bold;
+    
+  }
+  .quiz-btnO:active{
+    box-shadow: 0px 0px 0px 0px #007144;
+    position :relative;
+    top: 3px;
+  }
+  .quiz-btnX:active{
+    box-shadow: 0px 0px 0px 0px #8f0101;
+    position :relative;
+    top: 3px;
+  }
+  .question{
+    font-weight:bold;
+    color : white;
+    font-family: Times, "Times New Roman", Georgia, serif;
+    font-size: x-large;
+  }
+  h3{
+    color:white; 
+    font-size: x-large;
+    font-family: Times, "Times New Roman", Georgia, serif;
+  }
+  .restart,.startpage{
+    margin-left: 5px;
+    margin-right: 5px;
+    margin-bottom: 20px;
+    margin-top: 20px;
+    border: none;
+    width: 100px;
+    height: 40px;
+    background-color: #4a6bd4;
+    color : white;
+    font-family: Times, "Times New Roman", Georgia, serif;
+    font-size: large;
+    font-weight:bold;
+    border-radius: 16px;
+    
+  }
+  .quiz-result{
+    color : white;
+    font-size: large;
+    font-weight:bold;
+    font-family: Times, "Times New Roman", Georgia, serif;
+  }
+
+    </style>
+</head>
+<body>
+
+<div class="title">   
+    <h1>급훈<br>내일은 국어왕</h1>
+</div>
+
+<div class="quiz-container" id="quiz-con">
+    
+    <div id="quiz"> </div> 
+    <div id="quiz-result" class="quiz-result"></div>
+    <button id="Rbtn" value="R" class="restart" onclick="RbtnFun()"> 다시하기 </button>
+    <button id="Startbtn" value="S" class="startpage" onclick="FbtnFun()"> 처음으로 </button>
+</div>
+
+<div class="buttons">
+    <div class="bt1"><button id="Obtn" value="O" class="quiz-btnO" onclick="btnFun(value)"> O </button></div>
+    <div class="bt2"><button id="Xbtn" value="X" class="quiz-btnX" onclick="btnFun(value)"> X </button></div>
+</div>
+
+<div class="quiz-ctrl">
+
+   <div id="result"> </div> 
+</div>
+
+    <script>
+        const quizData = [
+            {
+                question : "세월이 빨리 흘러감을 이르는 사자성어는 세세연년(歲歲年年)이다.",
+                correct : 'X',
+                answer : "세월이 빨리 흘러감을 이르는 고사성어는 오비토주이며 세세연년의 뜻은 ‘여러 해를 거듭하여 계속 이어짐’이다."
+            },
+            {
+                question : "‘뜻이 높고 바르며 엄숙하고 날카로운 말’을 이르는 사자성어는 ‘고담준론(高談峻論)’이다.",
+                correct : 'O',
+                answer : "‘뜻이 높고 바르며 엄숙하고 날카로운 말’을 이르는 사자성어는 ‘고담준론’이며 또 다른 뜻으로는 ‘아무 거리낌 없이 잘난 체하며 과장하여 떠벌리는 말’이라는 뜻이있다."
+            },
+            {
+                question :  "오동수복(烏銅壽福)의 뜻은 ‘오래 살고 복을 누리며 건강하고 평안함’이다.",
+                correct : 'X',
+                answer : "오동수복은 백통으로 만든 그릇에 검붉은 구리로 ‘수(壽)’나 ‘복(福)’ 자를 박은 것으로 ‘오래살고 복을 누리며 건강하고 평안함’을 뜻하는 사자성어는 수복강녕이다."
+            },
+            {
+                question :  "‘지난날의 잘못이나 허물을 고쳐 올바르고 착하게 됨’을 뜻하는 사자성어는 개과천선(改過遷善)이다.",
+                correct : 'O',
+                answer : "‘지난날의 잘못이나 허물을 고쳐 올바르고 착하게 됨’을 뜻하는 사자성어는 개과천선이다."
+            },
+            {
+                question :  "사시장춘(四時長春)의 뜻은 ‘어느 때나 늘 봄과 같음’이다.",
+                correct : 'O',
+                answer : "사시장춘의 뜻은‘어느 때나 늘 봄과 같음’으로 다른 뜻으로는 ‘늘 잘 지냄을 비유적으로 이르는 말’이라는 뜻을 갖고 있다."
+            },
+            {
+                question :  "‘침소의대(寢所衣襨)’는 ‘작은 일을 크게 불리어 떠벌림’이라는 뜻을 갖고있는 사자성어다.",
+                correct : 'X',
+                answer : "‘침소의대’는 ‘궁중에서, 왕이나 왕비가 침소에 들 때에 입는 잠옷을 이르던말’로 ‘작은 일을 크게 불리어 떠벌림’이라는 뜻을 갖고있는 사자성어는 ‘침소봉대’이다."
+            },
+            {
+                question :  "‘한 가지 일에만 얽매여 발전을 모르는 어리석은 사람’이라는 뜻을 가진 사자성어는 ‘고식지계(姑息之計)’이다.",
+                correct : 'X',
+                answer : "‘한 가지 일에만 얽매여 발전을 모르는 어리석은 사람’이라는 뜻을가진 사자성어는 ‘수주대토’이며, ‘고식지계’는 ‘우선 당장 편한 것만을 택하는 꾀나 방법’으로, 한때의 안정을 얻기 위하여 임시로 둘러맞추어 처리하거나 이리저리 주선하여 꾸며 내는 계책을 이르는 말이다."
+            },
+            {
+                question :  "사자성어 ‘목불식정(目不識丁)’과 뜻이 비슷한 우리나라의 속담은 ‘낫 놓고 기역자도 모른다.’이다.",
+                correct : 'O',
+                answer : "‘목불식정’의 뜻은 ‘아주 간단한 글자인 ‘丁[고무래 정]’ 자를 보고도 그것이 ‘고무래’인 줄을 알지 못한다는 뜻’으로, 아주 까막눈임을 이르는 말이다."
+            },
+            {
+                question :  "‘여러 사람이 조금씩 힘을 합하면 한 사람을 돕기 쉬움’을 뜻하는 사자성어는 ‘십시일반(十匙一飯)’이다.",
+                correct : 'O',
+                answer : "‘십시일반’은 밥 열 술이 한 그릇이 된다는 뜻으로, 여러 사람이 조금씩 힘을 합하면 한 사람을 돕기 쉬움을 이르는 말이다."
+            },
+            {
+                question :  "유언비어(流言蜚語)의 뜻은 ‘아무 근거 없이 널리 퍼진 소문’이다.",
+                correct : 'O',
+                answer : "유언비어의 뜻은 ‘아무 근거 없이 널리 퍼진 소문’으로 유의어로는 뜬소문, 낭설 등이 있다."
+            }
+        ]
+
+        const quizDisplay = document.getElementById('quiz');
+
+        const OBtn = document.getElementById('Obtn');
+        const XBtn = document.getElementById('Xbtn');
+
+        let currentSlide = 0;
+        const resultDisplay = document.getElementById('quiz');
+        const rDisplay = document.getElementById('quiz-result');
+
+        function BuildQuiz(){
+            const output = [];
+            quizData.forEach(
+                (currentQuestion, questionNum)=> {
+                    const answers = [];
+                    
+                    output.push(`<div class="slide"><div class="question"> ${currentQuestion.question}</div>
+                                <div class="answer">${answers.join('&nbsp;&nbsp;&nbsp;&nbsp;')}</div></div>`);
+                }
+            );
+            quizDisplay.innerHTML = output.join('');
+        }
+        
+        var num = 0;
+        let numCorrect = 0;
+        let ans = [];
+
+        function btnFun(value){
+            const currentQuestion = quizData[num];
+                if (value === currentQuestion.correct){
+                    numCorrect++;
+                    ans.push(1);
+                    
+            }else{
+                ans.push(0);
+                console.log(ans);
+            }
+            if(currentSlide == slides.length-1){
+            resultDisplay.innerHTML=`<h3>${quizData.length}개중에서 ${numCorrect}개 <br>맞추셨습니다.</h3>`
+            }
+        num++;}
+
+        function showSlide(n){
+            currentSlide = n;
+
+            if(currentSlide == slides.length){
+                OBtn.style.display='none';
+                XBtn.style.display='none';
+                document.getElementById('Rbtn').style.display = "";
+                document.getElementById('Startbtn').style.display = "";
+                var  quizbox = document.getElementById("quiz-con");
+                quizbox.style.height = "200%";
+                check_num = 1;
+                for( var check of ans){
+                    if (check==1){
+                        console.log(check);
+                        rDisplay.innerHTML +=`<div style='margin:5px' >${check_num}. O</div>`;
+                        check_num += 1;
+                        
+                    }else{
+                        const currentQuestion = quizData[check_num-1];
+                        console.log(check);
+                        rDisplay.innerHTML +=`<div style='margin:5px'>${check_num}. X<br>${currentQuestion.answer}</div>`;
+                        check_num += 1;
+                    }
+                }
+                
+            }
+            if(n != 0){
+                slides[n-1].classList.remove('active-slide');
+            }
+            if(n != slides.length){
+            slides[n].classList.add('active-slide');
+            document.getElementById('Rbtn').style.display = "none";
+            document.getElementById('Startbtn').style.display = "none";
+            }
+            }
+
+        function RbtnFun(){
+            location.reload();
+        }
+        function FbtnFun(){
+            location.href='index.html';
+        }
+
+        
+
+        BuildQuiz();
+        const slides = document.querySelectorAll('.slide');
+        showSlide(currentSlide);
+        function showNextSlide(){showSlide(currentSlide+1);}
+        XBtn.addEventListener('click',showNextSlide);
+        OBtn.addEventListener('click',showNextSlide);
+
+    </script>
+</body>
+
+</html>

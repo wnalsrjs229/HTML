@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>내일은 국어왕</title>
+    <style>
+    body{
+        background-color: #F5D08A;
+    }
+    .quiz-container{
+      position:relative;
+      background-color:#1E821E;
+      border : 8px solid #D27D32;
+      font-size:17px;
+      color:#333;
+      height: 300px;
+      width: 80%;
+      text-align:center;
+      font-weight:300;
+      margin: auto;
+      margin-top: 15px;
+      margin-bottom: 20px;
+  }
+  
+  .slide{
+     position:absolute;
+     left:0px;
+     top:30%;
+     width:100%;
+     z-index:1;
+     opacity:0;
+     transition:opacity 0.5s;
+  }
+  
+  .active-slide{
+     opacity:1;
+     z-index:2;
+  }
+  h1{
+    margin: auto;
+    display: inline-block;
+    text-align: center;
+    font-family: "Comic Sans", "Apple Chancery", cursive;
+    font-size: x-large;
+  }
+  .title{
+    width: 100px;
+    text-align: center;
+    border: 6px solid #af6524;  
+    margin: auto;
+    background-color: whitesmoke;
+  }
+
+  .buttons{
+      width: 100%;
+      text-align: center;
+      
+  }
+  .bt1{
+    display: inline-block;
+  }
+  .bt2{
+    display: inline-block;
+  }
+
+  .quiz-btnO{
+    
+    background: #00AE68;
+    box-shadow: 0px 7px 0px 0px #007144;
+    border:none;
+    width: 80px;
+    height: 70px;
+    border-radius: 100%;
+    margin: 10px 2% 10px 0;
+    font-weight:bold;
+
+    display: block;
+  }
+  .quiz-btnX{
+    display: inline-block;
+    display: block;
+    background: #e22121;
+    box-shadow: 0px 7px 0px 0px #8f0101;
+    border:none;
+    width: 80px;
+    height: 70px;
+    border-radius: 100%;
+    font-weight:bold;
+    
+  }
+  .quiz-btnO:active{
+    box-shadow: 0px 0px 0px 0px #007144;
+    position :relative;
+    top: 3px;
+  }
+  .quiz-btnX:active{
+    box-shadow: 0px 0px 0px 0px #8f0101;
+    position :relative;
+    top: 3px;
+  }
+  .question{
+    font-weight:bold;
+    color : white;
+    font-family: Times, "Times New Roman", Georgia, serif;
+    font-size: x-large;
+  }
+  h3{
+    color:white; 
+    font-size: x-large;
+    font-family: Times, "Times New Roman", Georgia, serif;
+  }
+  .restart,.startpage{
+    margin-left: 5px;
+    margin-right: 5px;
+    margin-bottom: 20px;
+    margin-top: 20px;
+    border: none;
+    width: 100px;
+    height: 40px;
+    background-color: #4a6bd4;
+    color : white;
+    font-family: Times, "Times New Roman", Georgia, serif;
+    font-size: large;
+    font-weight:bold;
+    border-radius: 16px;
+  }
+  .quiz-result{
+    color : white;
+    font-size: large;
+    font-weight:bold;
+    font-family: Times, "Times New Roman", Georgia, serif;
+  }
+
+    </style>
+</head>
+<body>
+
+<div class="title">   
+    <h1>급훈<br>내일은 국어왕</h1>
+</div>
+
+<div class="quiz-container" id="quiz-con">
+    
+    <div id="quiz"> </div> 
+    <div id="quiz-result" class="quiz-result"></div>
+    <button id="Rbtn" value="R" class="restart" onclick="RbtnFun()"> 다시하기 </button>
+    <button id="Startbtn" value="S" class="startpage" onclick="FbtnFun()"> 처음으로 </button>
+</div>
+
+<div class="buttons">
+    <div class="bt1"><button id="Obtn" value="O" class="quiz-btnO" onclick="btnFun(value)"> O </button></div>
+    <div class="bt2"><button id="Xbtn" value="X" class="quiz-btnX" onclick="btnFun(value)"> X </button></div>
+</div>
+
+<div class="quiz-ctrl">
+
+   <div id="result"> </div> 
+</div>
+
+    <script>
+        const quizData = [
+            {
+                question : "'수 개월이 지나 다시 만났다.'는 띄어쓰기가 올바르게 되어있다.",
+                correct : 'X',
+                answer : "'수 개월이 지나다시 만났다.'라는 예문에서 '수개월'은 두서너 달 또는 여러 달을 뜻하는, 하나의 단어이므로, 붙여서 써야합니다."
+            },
+            {
+                question : "'저 필통은 내 거야!'는 띄어쓰기가 올바르게 되어있다.",
+                correct : 'O',
+                answer : "'저 필통은 내 거야!'와 같은 예문에서 '내'와 의존 명사 '거'는 각각의 단어이므로, 띄어 적습니다."
+            },
+            {
+                question : "'내 머리 속은 너로 가득 찼어.'는 띄어쓰기가 올바르게 되어있다.",
+                correct : 'X',
+                answer : "상상이나 생각이 이루어지거나 지식 따위가 저장된다고 믿는 머리 안의 추상적인 공간을 이르는 말은 '머릿속'이므로 ‘내 머리 속은 너로 가득 찼어.’에서는 ‘머리 속’을 ‘머릿속’으로 고쳐 써야한다."
+            },
+            {
+                question :  "'과자를 종류별로 샀다.'는 띄어쓰기가 올바르게 되어있다.",
+                correct : 'O',
+                answer : "‘문제에서 나온 단어 ‘종류별’에서 '별'은 새로운 단어를 만드는 접사이기 때문에 앞말과 붙여 써야 한다."
+            },
+            {
+                question :  "'방금 축구 경기는 일 대 일로 마쳤다.'는 띄어쓰기가 올바르게 되어있다.",
+                correct : 'O',
+                answer : "사물과 사물의 대비나 대립을 나타내는 의존 명사 '대'는 앞뒤의 말과 띄어 씁니다. 따라서 문제의 ‘~경기는 일 대 일~’부분은 맞게 쓰였다."
+            },
+            {
+                question :  "'애교살을 강조했다.'는 띄어쓰기가 올바르게 되어있다.",
+                correct : 'X',
+                answer : "'애교살'은 올바른 띄어쓰기가 아니다. '애교'에 '살'이 붙은 형태는 하나의 낱말로 인정되지 않는다.)"
+            },
+            {
+                question :  "'내 동생은 보란듯이 성공했다.'는 띄어쓰기가 올바르게 되어있다.",
+                correct : 'X',
+                answer : "문제에서 나온‘보란듯이 성공했다.’에서 ‘보란 듯이’는 '보란' 뒤에 의존 명사 '듯이'가 쓰인 것입니다. 따라서 ‘보란 듯이’와 같이 띄어 써야한다.)"
+            },
+            {
+                question :  "'어제 게임을 하느라 한숨도 못 잤다.'는 띄어쓰기가 올바르게 되어있다.",
+                correct : 'O',
+                answer : "문제에 나온 문장 ‘어제 한숨도 못 잤다’에서 '못'은 부사로 뒷말과 띄어 써야 한다."
+            },
+            {
+                question :  "'문방구에서 여러가지 물건들을 구경했다.'는 띄어쓰기가 올바르게 되어있다.",
+                correct : 'X',
+                answer : "문제에서 나온 단어 ‘여러가지’에서 '가지'는 의존명사이기 때문에 ‘여러 가지’와 같이 앞말과 띄어 써야 한다."
+            },
+            {
+                question :  "'밥을 먹기는커녕 물도 못 마셨다.'는 띄어쓰기가 올바르게 되어있다.",
+                correct : 'O',
+                answer : "문제에서 나온 문장 ‘밥을 먹기는커녕~’에서 '는커녕'은 조사로 앞말과 붙여 써야 한다."
+            }
+        ]
+
+        const quizDisplay = document.getElementById('quiz');
+
+        const OBtn = document.getElementById('Obtn');
+        const XBtn = document.getElementById('Xbtn');
+
+        let currentSlide = 0;
+        const resultDisplay = document.getElementById('quiz');
+        const rDisplay = document.getElementById('quiz-result');
+
+        function BuildQuiz(){
+            const output = [];
+            quizData.forEach(
+                (currentQuestion, questionNum)=> {
+                    const answers = [];
+                    
+                    output.push(`<div class="slide"><div class="question"> ${currentQuestion.question}</div>
+                                <div class="answer">${answers.join('&nbsp;&nbsp;&nbsp;&nbsp;')}</div></div>`);
+                }
+            );
+            quizDisplay.innerHTML = output.join('');
+        }
+        
+        var num = 0;
+        let numCorrect = 0;
+        let ans = [];
+
+        function btnFun(value){
+            const currentQuestion = quizData[num];
+                if (value === currentQuestion.correct){
+                    numCorrect++;
+                    ans.push(1);
+                    
+            }else{
+                ans.push(0);
+                console.log(ans);
+            }
+            if(currentSlide == slides.length-1){
+            resultDisplay.innerHTML=`<h3>${quizData.length}개중에서 ${numCorrect}개 <br>맞추셨습니다.</h3>`
+            }
+        num++;}
+
+        function showSlide(n){
+            currentSlide = n;
+
+            if(currentSlide == slides.length){
+                OBtn.style.display='none';
+                XBtn.style.display='none';
+                document.getElementById('Rbtn').style.display = "";
+                document.getElementById('Startbtn').style.display = "";
+                var  quizbox = document.getElementById("quiz-con");
+                quizbox.style.height = "200%";
+                check_num = 1;
+                for( var check of ans){
+                    if (check==1){
+                        console.log(check);
+                        rDisplay.innerHTML +=`<div style='margin:5px' >${check_num}. O</div>`;
+                        check_num += 1;
+                        
+                    }else{
+                        const currentQuestion = quizData[check_num-1];
+                        console.log(check);
+                        rDisplay.innerHTML +=`<div style='margin:5px'>${check_num}. X<br>${currentQuestion.answer}</div>`;
+                        check_num += 1;
+                    }
+                }
+                
+            }
+            if(n != 0){
+                slides[n-1].classList.remove('active-slide');
+            }
+            if(n != slides.length){
+            slides[n].classList.add('active-slide');
+            document.getElementById('Rbtn').style.display = "none";
+            document.getElementById('Startbtn').style.display = "none";
+            }
+            }
+
+        function RbtnFun(){
+            location.reload();
+        }
+        function FbtnFun(){
+            location.href='index.html';
+        }
+
+        
+
+        BuildQuiz();
+        const slides = document.querySelectorAll('.slide');
+        showSlide(currentSlide);
+        function showNextSlide(){showSlide(currentSlide+1);}
+        XBtn.addEventListener('click',showNextSlide);
+        OBtn.addEventListener('click',showNextSlide);
+
+    </script>
+</body>
+
+</html>
