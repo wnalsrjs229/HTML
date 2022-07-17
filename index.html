@@ -6,6 +6,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>내일은 국어왕</title>
     <style>
+    .title1{
+      font-size: large;
+    }
+
     body{
         background-color: #F5D08A;
     }
@@ -60,7 +64,7 @@
 <body>
 
     <div class="title">   
-        <h1>급훈<br>내일은<br>국어왕</h1> 
+        <h1>급훈<br><div class="title1">내일은<br>국어왕</div></h1> 
     </div>
     
     <div class="quiz-container" id="quiz-con">
@@ -68,9 +72,9 @@
             <h2>문제 유형을 선택하세요.</h2>
         </div>
         <button id="quiz1" onclick="quiz1()">사자성어</button><br>
-        <button id="quiz1" onclick="quiz2()">띄어쓰기</button><br>
-        <button id="quiz1" onclick="quiz3()">고전</button><br>
-        <button id="quiz1" onclick="quiz4()">우리말</button>
+        <button id="quiz2" onclick="quiz2()">띄어쓰기</button><br>
+        <button id="quiz3" onclick="quiz3()">고전</button><br>
+        <button id="quiz4" onclick="quiz4()">우리말</button>
     </div>
 <script>
     function quiz1(){
